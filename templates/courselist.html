@@ -1,11 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
 
+<style>
+    .course-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .course-table th, .course-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .course-table th {
+        background-color: #f2f2f2;
+    }
+
+    .course-image {
+        max-width: 200px; /* Set maximum width for the images */
+        height: auto; /* Maintain aspect ratio */
+    }
+</style>
+
 <h2>Course List</h2>
 <h3>current competition courses</h3>
 
 <!-- code to display list of courses-->
-<table>
+<table class="course-table">
     <tr>
         <th>Course</th>
         <th>Name</th>
@@ -13,9 +36,9 @@
     </tr>
     {% for course in course_list %}
         <tr>
-            {% for field in course %}
-                <td>{{field}}</td>
-            {% endfor %}
+            <td>{{ course[0] }}</td> <!-- Displaying course name -->
+            <td>{{ course[1] }}</td> <!-- Displaying GIF filename -->
+            <td><img class="course-image" src="{{ url_for('static', filename=course[2]) }}" alt="Map Diagram"></td> <!-- Displaying GIF using filename -->
         </tr>
     {% endfor %}
 </table>
