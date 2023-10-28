@@ -23,17 +23,46 @@ def getCursor():
     dbconn = connection.cursor()
     return dbconn
 
+def getDrivers():
+    connection = getCursor()
+    connection.execute(
+        """ SELECT d.driver_id, d.surname, d.first_name, d.date_of_birth, d.age, d.caregiver, c.model, c.drive_class
+            FROM driver d
+            LEFT JOIN car c
+            ON d.car = c.car_num
+            ORDER BY d.surname, d.first_name;""")
+    driverDetail = connection.fetchall()
+    return driverDetail
+
+
 @app.route("/")
 def home():
     return render_template("base.html")
 
+# @app.route("/listruns", methods=["GET", "POST"])
+# def getdriver():
+#     if request.method == "POST":
+#         connection = getCursor()
+#         connection.execute(
+#             """SELECT CONCAT(d.first_name,' ', d.surname) AS driver_name, d.driver_id, d.date_of_birth, d.age, d.caregiver, 
+#                         r.run_num, r.crs_id, r.seconds, r.cones, r.wd, round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2) AS run_total, 
+#                         c.name, car.model, car.drive_class
+#                         FROM driver d
+#                 LEFT JOIN run r ON d.driver_id = r.dr_id
+#                 LEFT JOIN course c ON c.course_id = r.crs_id
+#                 LEFT JOIN car car ON car.car_num = d.car;""")
+#         runDetail = connection.fetchall()
+#         return render_template("driverdetail.html", run_detail = runDetail)   
+#     else:
+#         driverList = listdrivers()
+#         return render_template("runlist.html", driver_list=driverList)
+
 @app.route("/listdrivers")
 def listdrivers():
-    connection = getCursor()
-    connection.execute("SELECT * FROM driver;")
-    driverList = connection.fetchall()
-    print(driverList)
-    return render_template("driverlist.html", driver_list = driverList)    
+    driverList = getDrivers()
+    return render_template("driverlist.html", driver_list = driverList)
+
+
 
 @app.route("/listcourses")
 def listcourses():
