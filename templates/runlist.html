@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Run List</h2>
+
+
+<!-- Form for selecting driver and redirecting to runlist page -->
+<form id="runlist" name="run_form" action="{{ url_for('listruns') }}" method="post">
+    <label>Select a Driver:</label>
+    <select name="driver" id="driver" on >
+        <option>&lt;Select a driver&gt;</option>
+        {% for driver in drivers %}
+            <option value="{{ driver[0] }}" {% if driver[0] == selected_driver_id %}selected=“selected”{% endif %}> {{ driver[1] }} {{ driver[2] }}
+        {% endfor %}
+    </select>
+    <input type="submit" value = "Check Runs" onchange="this.form.submit()"/>
+    <input type="reset" value="Cancel" />
+</form>
+
+{% if run_list %}
+<div class="mt-4 mb-4">
+    <strong>Driver ID:</strong> {{ run_list[0][0] }} |
+    <strong>Driver Name:</strong> {{ run_list[0][1] }} |
+    <strong>Car Model:</strong> {{ run_list[0][8] }} |
+    <strong>Drive Class:</strong> {{ run_list[0][9] }}
+</div>
+
+    <table class="table table-bordered mt-4">
+        <thead class="thead-light">
+            <tr>
+                <th>Course Name</th>
+                <th>Run Number</th>
+                <th>Seconds</th>
+                <th>Cones</th>
+                <th>WD</th>
+                <th>Run Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for run in run_list %}
+                <tr>
+                    <td>{{ run[2] }}</td>
+                    <td>{{ run[3] }}</td>
+                    <td>{{ run[4] or ''}}</td>
+                    <td>{{ run[5] or ''}}</td>
+                    <td>{{ run[6] or ''}}</td>
+                    <td>{{ run[7] or ''}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}

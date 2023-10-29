@@ -21,7 +21,7 @@
         {% for driver in driver_list %}
             <tr {% if driver[4] is not none and 12 <= driver[4] <= 25 %} class="table-warning" {% endif %}>
                 <td>{{ driver[0] }}</td>
-                <td>{{ driver[1] }} {{ driver[2] }}</td>
+                <td><a href="listruns?selected_driver_id={{driver[0]}}">{{ driver[1] }} {{ driver[2] }}</a></td>
                 <td>{{ driver[3] or '' }}</td>
                 <td>{{ driver[4] or '' }}</td>
                 <td>{{ driver[5] or '' }}</td>

@@ -26,11 +26,12 @@ def getCursor():
 def getDrivers():
     connection = getCursor()
     connection.execute(
-        """ SELECT d.driver_id, d.surname, d.first_name, d.date_of_birth, d.age, d.caregiver, c.model, c.drive_class
-            FROM driver d
-            LEFT JOIN car c
-            ON d.car = c.car_num
-            ORDER BY d.surname, d.first_name;""")
+        """ 
+        SELECT d.driver_id, d.surname, d.first_name, d.date_of_birth, d.age, d.caregiver, c.model, c.drive_class
+        FROM driver d
+        LEFT JOIN car c
+        ON d.car = c.car_num
+        ORDER BY d.surname, d.first_name;""")
     driverDetail = connection.fetchall()
     return driverDetail
 
@@ -39,29 +40,38 @@ def getDrivers():
 def home():
     return render_template("base.html")
 
-# @app.route("/listruns", methods=["GET", "POST"])
-# def getdriver():
-#     if request.method == "POST":
-#         connection = getCursor()
-#         connection.execute(
-#             """SELECT CONCAT(d.first_name,' ', d.surname) AS driver_name, d.driver_id, d.date_of_birth, d.age, d.caregiver, 
-#                         r.run_num, r.crs_id, r.seconds, r.cones, r.wd, round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2) AS run_total, 
-#                         c.name, car.model, car.drive_class
-#                         FROM driver d
-#                 LEFT JOIN run r ON d.driver_id = r.dr_id
-#                 LEFT JOIN course c ON c.course_id = r.crs_id
-#                 LEFT JOIN car car ON car.car_num = d.car;""")
-#         runDetail = connection.fetchall()
-#         return render_template("driverdetail.html", run_detail = runDetail)   
-#     else:
-#         driverList = listdrivers()
-#         return render_template("runlist.html", driver_list=driverList)
+@app.route("/listruns/", methods=["GET", "POST"])
+def listruns():
+    drivers = getDrivers()
+    runList = None
+    selected_driver_id = request.form.get("driver") or request.args.get('selected_driver_id')
+
+    try:
+        selected_driver_id=int(selected_driver_id)
+    except:
+        selected_driver_id=None
+    if request.method == 'POST' or selected_driver_id is not None:
+        connection = getCursor()
+        connection.execute(
+            """
+            SELECT d.driver_id, CONCAT(d.first_name,' ', d.surname) AS driver_name,
+                c.name AS course, r.run_num, r.seconds, r.cones, r.wd, 
+                round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2) AS run_total, 
+                car.model, car.drive_class
+            FROM driver d
+            LEFT JOIN run r ON d.driver_id = r.dr_id
+            LEFT JOIN course c ON c.course_id = r.crs_id
+            LEFT JOIN car car ON car.car_num = d.car
+            WHERE d.driver_id = %s
+            ORDER BY c.name, r.run_num""", (selected_driver_id,))
+        runList = connection.fetchall()
+    return render_template("runlist.html", drivers=drivers, run_list=runList, selected_driver_id=selected_driver_id)
+
 
 @app.route("/listdrivers")
 def listdrivers():
     driverList = getDrivers()
     return render_template("driverlist.html", driver_list = driverList)
-
 
 
 @app.route("/listcourses")
