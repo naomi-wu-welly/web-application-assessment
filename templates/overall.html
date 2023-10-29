@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Overall Results</h2>
+
+<table class="table table-bordered mt-4">
+    <thead class="thead-light">
+        <tr>
+            <th>Driver ID</th>
+            <th>Driver Name</th>
+            <th>Course</th>
+            <th>Course Time</th>
+            <th>Car Model</th>
+            <th>Overall Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for list in overall_list %}
+            <tr>
+                <td>{{ list[0] }}</td>
+                <td>
+                    {% if list[2] is not none and 12 <= list[2] and list[2] <= 25 %}
+                        {{ list[1] }} (J)
+                    {% else %}
+                        {{ list[1] }}
+                    {% endif %}
+                </td>
+                <td>{{ list[3] }}</td>
+                <td>{{ list[4] }}</td>
+                <td>{{ list[5] }}</td>
+                <td>
+                    {% if list[7] == 1 %}
+                        {{ list[6] }} (cup)
+                    {% elif list[7] > 1 and list[7] < 6 %}
+                        {{ list[6] }} (prize)
+                    {% else %}
+                        {{ list[6] }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- {% if nq_results %}
+    <p class="mt-4">Note: The following drivers had NQ results and are not included in the overall results table.</p>
+    <ul>
+        {% for driver in nq_results %}
+            <li>Driver ID: {{ driver[0] }}, Driver Name: {{ driver[1] }}, Car Model: {{ driver[2] }}</li>
+        {% endfor %}
+    </ul>
+{% endif %} -->
+
+{% endblock %}

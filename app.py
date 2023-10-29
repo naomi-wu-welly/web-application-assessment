@@ -81,6 +81,41 @@ def listcourses():
     courseList = connection.fetchall()
     return render_template("courselist.html", course_list = courseList)
 
+@app.route("/listoverall")
+def listoverall():
+    connection = getCursor()
+    valid_result = """
+        SELECT driver_id, driver_name, age, course, course_time, model, overall_result,
+            DENSE_RANK() OVER(ORDER BY driver_id) AS rank_num
+        FROM (
+        SELECT d.driver_id, CONCAT(d.first_name,' ', d.surname) AS driver_name, d.age,
+            c.name AS course, MIN(round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2)) AS course_time,
+            car.model, 
+            ROUND(SUM(MIN(round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2))) OVER(PARTITION BY d.driver_id),2) AS overall_result
+        FROM driver d
+        LEFT JOIN run r ON d.driver_id = r.dr_id
+        LEFT JOIN course c ON c.course_id = r.crs_id
+        LEFT JOIN car car ON car.car_num = d.car
+        WHERE d.driver_id NOT IN (
+            SELECT driver_id FROM (
+                SELECT d.driver_id, CONCAT(d.first_name,' ', d.surname) AS driver_name, 
+                    c.name AS course, MIN(round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2)) AS course_time
+                FROM driver d
+                LEFT JOIN run r ON d.driver_id = r.dr_id
+                LEFT JOIN course c ON c.course_id = r.crs_id
+                LEFT JOIN car car ON car.car_num = d.car
+                GROUP BY d.driver_id, driver_name, course
+                HAVING course_time IS NULL
+            ) t1
+        )
+        GROUP BY d.driver_id, driver_name, course
+        ORDER BY overall_result, course_time) t2;
+    """
+    connection.execute(valid_result)
+    courseList = connection.fetchall()
+    
+    return render_template("overall.html", overall_list = courseList)
+
 @app.route("/graph")
 def showgraph():
     connection = getCursor()
