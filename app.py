@@ -113,8 +113,33 @@ def listoverall():
     """
     connection.execute(valid_result)
     courseList = connection.fetchall()
+
+    nq_result = """
+        SELECT d.driver_id, CONCAT(d.first_name,' ', d.surname) AS driver_name, d.age,
+        c.name AS course, MIN(round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2)) AS run_total,
+        car.model
+        FROM driver d
+        LEFT JOIN run r ON d.driver_id = r.dr_id
+        LEFT JOIN course c ON c.course_id = r.crs_id
+        LEFT JOIN car car ON car.car_num = d.car
+        WHERE d.driver_id IN (
+            SELECT driver_id FROM (
+                SELECT d.driver_id, CONCAT(d.first_name,' ', d.surname) AS driver_name, 
+                    c.name AS course, MIN(round(r.seconds+5*IFNULL(r.cones, 0)+10*r.wd,2)) AS run_total
+                FROM driver d
+                LEFT JOIN run r ON d.driver_id = r.dr_id
+                LEFT JOIN course c ON c.course_id = r.crs_id
+                LEFT JOIN car car ON car.car_num = d.car
+                GROUP BY d.driver_id, driver_name, course
+                HAVING run_total IS NULL
+            ) t1
+        )
+        GROUP BY d.driver_id, driver_name, course
+        ORDER BY driver_id,run_total;"""
+    connection.execute(nq_result)
+    nqlist = connection.fetchall()
     
-    return render_template("overall.html", overall_list = courseList)
+    return render_template("overall.html", overall_list = courseList,nq_list = nqlist)
 
 @app.route("/graph")
 def showgraph():
