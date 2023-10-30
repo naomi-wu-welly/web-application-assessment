@@ -8,35 +8,46 @@
         <tr>
             <th>Driver ID</th>
             <th>Driver Name</th>
-            <th>Course</th>
-            <th>Course Time</th>
             <th>Car Model</th>
+            <th>Cracked Fluorescent</th>
+            <th>Going Loopy</th>
+            <th>Hamburger</th>  
+            <th>Mum's Favourite</th>
+            <th>Shoulders Back Walnut</th>
+            <th>Walnut</th>
             <th>Overall Result</th>
+            <th>Award</th>
         </tr>
     </thead>
     <tbody>
         {% for list in overall_list %}
             <tr>
-                <td>{{ list[0] }}</td>
+                <td>{{ list.driver_id }}</td>
                 <td>
-                    {% if list[2] is not none and 12 <= list[2] and list[2] <= 25 %}
-                        {{ list[1] }} (J)
+                    {% if 12 <= list.age and list.age <= 25 %}
+                        {{ list.driver_name }} (J)
                     {% else %}
-                        {{ list[1] }}
+                        {{ list.driver_name }}
                     {% endif %}
                 </td>
-                <td>{{ list[3] }}</td>
-                <td>{{ list[4] }}</td>
-                <td>{{ list[5] }}</td>
+                <td>{{ list.model }}</td>
+                <td>{{ list.course_1 }}</td>
+                <td>{{ list.course_2 }}</td>
+                <td>{{ list.course_3 }}</td>
+                <td>{{ list.course_4 }}</td>
+                <td>{{ list.course_5 }}</td>
+                <td>{{ list.course_6 }}</td>
+                <td>{{ list.overall_result }}</td>
                 <td>
-                    {% if list[7] == 1 %}
-                        {{ list[6] }} (cup)
-                    {% elif list[7] > 1 and list[7] < 6 %}
-                        {{ list[6] }} (prize)
+                    {% if list.rank_num == 1 %}
+                        cup
+                    {% elif list.rank_num > 1 and list.rank_num < 6 %}
+                        prize
                     {% else %}
-                        {{ list[6] }}
+                        
                     {% endif %}
                 </td>
+
             </tr>
         {% endfor %}
     </tbody>
@@ -49,25 +60,33 @@
             <tr>
                 <th>Driver ID</th>
                 <th>Driver Name</th>
-                <th>Course</th>
-                <th>Course Time</th>
                 <th>Car Model</th>
+                <th>Cracked Fluorescent</th>
+                <th>Going Loopy</th>
+                <th>Hamburger</th>  
+                <th>Mum's Favourite</th>
+                <th>Shoulders Back Walnut</th>
+                <th>Walnut</th>
             </tr>
         </thead>
         <tbody>
             {% for list in nq_list %}
                 <tr>
-                    <td>{{ list[0] }}</td>
+                    <td>{{ list.driver_id }}</td>
                     <td>
-                        {% if list[2] is not none and 12 <= list[2] and list[2] <= 25 %}
-                            {{ list[1] }} (J)
+                        {% if 12 <= list.age and list.age <= 25 %}
+                            {{ list.driver_name }} (J)
                         {% else %}
-                            {{ list[1] }}
+                            {{ list.driver_name }}
                         {% endif %}
                     </td>
-                    <td>{{ list[3] }}</td>
-                    <td>{{ list[4] or ''}}</td>
-                    <td>{{ list[5] }}</td>
+                    <td>{{ list.model }}</td>
+                    <td>{{ list.course_1 }}</td>
+                    <td>{{ list.course_2 }}</td>
+                    <td>{{ list.course_3 }}</td>
+                    <td>{{ list.course_4 }}</td>
+                    <td>{{ list.course_5 }}</td>
+                    <td>{{ list.course_6 }}</td>
                 </tr>
             {% endfor %}
         </tbody>

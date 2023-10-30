@@ -21,7 +21,7 @@
 ### Assumptions and design decisions
 - Assumptions  
     There were some assumptions around template of showinhg overall result. 
-    I assume that I have to attach overall result for each driver in the last cell for each row of that driver, even it causes duplicated information in that way.
+    I assume that there exist a column 'Award' to identify drivers who have valid overall result and rank in few places in the completetion. So I have put all the awards under the column in the overall result table at the end of each row.
 - Design decision  
     I have decided to use template runlist.html to display drop-down box and return all the run details under that box in the same page. I was thinking about use separate pages to display details for each different driver, but it will increase the routes and templates so that I chosed the earlier options.
     And bying choosing this way, I metger the GET and POST in the same route (runlist.html), reducing duplicated scripts and easy to maintain and debug.
