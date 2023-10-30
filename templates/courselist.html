@@ -1,5 +1,6 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
+<!-- course_list is the variable passed in containing the list of courses -->
+<!-- Add code to display a list of courses -->
 
 <style>
     .course-table {
@@ -8,7 +9,8 @@
         margin-bottom: 20px;
     }
 
-    .course-table th, .course-table td {
+    .course-table th,
+    .course-table td {
         border: 1px solid #ddd;
         padding: 8px;
         text-align: left;
@@ -19,8 +21,10 @@
     }
 
     .course-image {
-        max-width: 200px; /* Set maximum width for the images */
-        height: auto; /* Maintain aspect ratio */
+        max-width: 200px;
+        /* Set maximum width for the images */
+        height: auto;
+        /* Maintain aspect ratio */
     }
 </style>
 
@@ -35,11 +39,16 @@
         <th>Map diagram</th>
     </tr>
     {% for course in course_list %}
-        <tr>
-            <td>{{ course[0] }}</td> <!-- Displaying course name -->
-            <td>{{ course[1] }}</td> <!-- Displaying GIF filename -->
-            <td><img class="course-image" src="{{ url_for('static', filename=course[2]) }}" alt="Map Diagram"></td> <!-- Displaying GIF using filename -->
-        </tr>
+    <tr>
+        <td>{{ course[0] }}</td>
+        <!-- Displaying course name -->
+        <td>{{ course[1] }}</td>
+        <!-- Displaying GIF filename -->
+        <td>
+            <img class="course-image" src="{{ url_for('static', filename=course[2]) }}" alt="Map Diagram" />
+        </td>
+        <!-- Displaying GIF using filename -->
+    </tr>
     {% endfor %}
 </table>
 
