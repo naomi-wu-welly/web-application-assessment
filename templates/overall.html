@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
+<!-- overall_list and nq_list are the variables passed in containing the details of overall course time result for each driver -->
+<!-- Add code to display a list of overall details -->
+
 
 <h2>Overall Results</h2>
 
@@ -11,7 +14,7 @@
             <th>Car Model</th>
             <th>Cracked Fluorescent</th>
             <th>Going Loopy</th>
-            <th>Hamburger</th>  
+            <th>Hamburger</th>
             <th>Mum's Favourite</th>
             <th>Shoulders Back Walnut</th>
             <th>Walnut</th>
@@ -21,76 +24,63 @@
     </thead>
     <tbody>
         {% for list in overall_list %}
-            <tr>
-                <td>{{ list.driver_id }}</td>
-                <td>
-                    {% if 12 <= list.age and list.age <= 25 %}
-                        {{ list.driver_name }} (J)
-                    {% else %}
-                        {{ list.driver_name }}
-                    {% endif %}
-                </td>
-                <td>{{ list.model }}</td>
-                <td>{{ list.course_1 }}</td>
-                <td>{{ list.course_2 }}</td>
-                <td>{{ list.course_3 }}</td>
-                <td>{{ list.course_4 }}</td>
-                <td>{{ list.course_5 }}</td>
-                <td>{{ list.course_6 }}</td>
-                <td>{{ list.overall_result }}</td>
-                <td>
-                    {% if list.rank_num == 1 %}
-                        cup
-                    {% elif list.rank_num > 1 and list.rank_num < 6 %}
-                        prize
-                    {% else %}
-                        
-                    {% endif %}
-                </td>
+        <tr>
+            <td>{{ list.driver_id }}</td>
+            <td>
+                {% if 12 <= list.age and list.age <=25 %} {{ list.driver_name }} (J) {% else %} {{ list.driver_name }}
+                    {% endif %} </td>
+            <td>{{ list.model }}</td>
+            <td>{{ list.course_1 }}</td>
+            <td>{{ list.course_2 }}</td>
+            <td>{{ list.course_3 }}</td>
+            <td>{{ list.course_4 }}</td>
+            <td>{{ list.course_5 }}</td>
+            <td>{{ list.course_6 }}</td>
+            <td>{{ list.overall_result }}</td>
+            <td>
+                {% if list.rank_num == 1 %}
+                cup
+                {% elif list.rank_num > 1 and list.rank_num < 6 %} prize {% else %} {% endif %} </td>
 
-            </tr>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
 
 {% if nq_list %}
-    <p class="mt-4">Note: The following drivers had NQ results and are not included in the overall results table.</p>
-    <table class="table table-bordered mt-4">
-        <thead class="thead-light">
-            <tr>
-                <th>Driver ID</th>
-                <th>Driver Name</th>
-                <th>Car Model</th>
-                <th>Cracked Fluorescent</th>
-                <th>Going Loopy</th>
-                <th>Hamburger</th>  
-                <th>Mum's Favourite</th>
-                <th>Shoulders Back Walnut</th>
-                <th>Walnut</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for list in nq_list %}
-                <tr>
-                    <td>{{ list.driver_id }}</td>
-                    <td>
-                        {% if 12 <= list.age and list.age <= 25 %}
-                            {{ list.driver_name }} (J)
-                        {% else %}
-                            {{ list.driver_name }}
-                        {% endif %}
-                    </td>
-                    <td>{{ list.model }}</td>
-                    <td>{{ list.course_1 }}</td>
-                    <td>{{ list.course_2 }}</td>
-                    <td>{{ list.course_3 }}</td>
-                    <td>{{ list.course_4 }}</td>
-                    <td>{{ list.course_5 }}</td>
-                    <td>{{ list.course_6 }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %} 
+<p class="mt-4">Note: The following drivers had NQ results and are not included in the overall results table.</p>
+<table class="table table-bordered mt-4">
+    <thead class="thead-light">
+        <tr>
+            <th>Driver ID</th>
+            <th>Driver Name</th>
+            <th>Car Model</th>
+            <th>Cracked Fluorescent</th>
+            <th>Going Loopy</th>
+            <th>Hamburger</th>
+            <th>Mum's Favourite</th>
+            <th>Shoulders Back Walnut</th>
+            <th>Walnut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for list in nq_list %}
+        <tr>
+            <td>{{ list.driver_id }}</td>
+            <td>
+                {% if 12 <= list.age and list.age <=25 %} {{ list.driver_name }} (J) {% else %} {{ list.driver_name }}
+                    {% endif %} </td>
+            <td>{{ list.model }}</td>
+            <td>{{ list.course_1 }}</td>
+            <td>{{ list.course_2 }}</td>
+            <td>{{ list.course_3 }}</td>
+            <td>{{ list.course_4 }}</td>
+            <td>{{ list.course_5 }}</td>
+            <td>{{ list.course_6 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 
 {% endblock %}
